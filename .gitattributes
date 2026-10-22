@@ -2,7 +2,7 @@
 
 *.png binary
 
-/tests           export-ignore
+/test            export-ignore
 /docs            export-ignore
 /art             export-ignore
 /scripts         export-ignore
