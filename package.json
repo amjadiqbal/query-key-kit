@@ -1,7 +1,7 @@
 {
   "name": "@amjadiqbal/query-key-kit",
   "version": "0.1.0",
-  "description": "Typed query-key hierarchy and invalidation helpers for TanStack Query v5, built on queryOptions(). A maintained, drop-in successor to @lukemorales/query-key-factory for React, Vue, Solid, Svelte and Angular Query.",
+  "description": "Typed query-key hierarchy and invalidation helpers for TanStack Query v5, built on queryOptions(). A maintained, drop-in successor to @lukemorales/query-key-factory. Framework-agnostic (query-core only).",
   "keywords": [
     "tanstack",
     "tanstack-query",

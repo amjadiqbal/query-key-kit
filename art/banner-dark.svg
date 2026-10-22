@@ -33,7 +33,7 @@
   <text x="292" y="176" font-family="Inter, -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="25" font-weight="500" fill="#CBD5E1">Typed query keys + invalidation helpers on top of <tspan font-family="'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace" fill="#34D399" font-weight="600">queryOptions()</tspan></text>
   <g font-family="Inter, -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="17" font-weight="600">
     <rect x="292" y="204" width="214" height="36" rx="18" fill="#111C33" stroke="#1E2A44"/><text x="399" y="228" text-anchor="middle" fill="#34D399">for TanStack Query v5</text>
-    <rect x="518" y="204" width="330" height="36" rx="18" fill="#111C33" stroke="#1E2A44"/><text x="683" y="228" text-anchor="middle" fill="#CBD5E1">React · Vue · Solid · Svelte · Angular</text>
-    <rect x="860" y="204" width="300" height="36" rx="18" fill="#111C33" stroke="#1E2A44"/><text x="1010" y="228" text-anchor="middle" fill="#CBD5E1">query-key-factory compatible</text>
+    <rect x="518" y="204" width="196" height="36" rx="18" fill="#111C33" stroke="#1E2A44"/><text x="616" y="228" text-anchor="middle" fill="#CBD5E1">framework-agnostic</text>
+    <rect x="726" y="204" width="300" height="36" rx="18" fill="#111C33" stroke="#1E2A44"/><text x="876" y="228" text-anchor="middle" fill="#CBD5E1">query-key-factory compatible</text>
   </g>
 </svg>

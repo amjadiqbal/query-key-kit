@@ -8,6 +8,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 ### Changed
 
 - The npm package now includes `CHANGELOG.md`.
+- README, package description and art say "framework-agnostic" instead of listing Solid, Svelte and Angular, which have no tests of their own yet.
 
 ## [0.1.0] - 2026-10-23
 

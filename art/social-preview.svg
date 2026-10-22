@@ -43,6 +43,6 @@
   </g>
   <g font-family="Inter, -apple-system, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="600">
     <text x="80" y="596" fill="#34D399">npm i @amjadiqbal/query-key-kit</text>
-    <text x="1200" y="596" text-anchor="end" fill="#94A3B8">for TanStack Query v5 · React · Vue · Solid · Svelte · Angular</text>
+    <text x="1200" y="596" text-anchor="end" fill="#94A3B8">for TanStack Query v5 · framework-agnostic</text>
   </g>
 </svg>

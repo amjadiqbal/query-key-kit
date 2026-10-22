@@ -7,7 +7,7 @@
 
 # query-key-kit: typed query keys for TanStack Query v5
 
-A typed **query-key factory** for TanStack Query v5 (React Query, Vue Query, Solid Query, Svelte Query, Angular Query). Organise your query keys in scopes, get real `queryOptions()` objects back with `DataTag`-branded keys, and invalidate or update whole branches of the cache with typed helpers. It keeps the API of `@lukemorales/query-key-factory`, so switching is an import change.
+A typed, framework-agnostic **query-key factory** for TanStack Query v5, tested with React Query and Vue Query. Organise your query keys in scopes, get real `queryOptions()` objects back with `DataTag`-branded keys, and invalidate or update whole branches of the cache with typed helpers. It keeps the API of `@lukemorales/query-key-factory`, so switching is an import change.
 
 [![npm](https://img.shields.io/npm/v/@amjadiqbal/query-key-kit?style=flat-square)](https://www.npmjs.com/package/@amjadiqbal/query-key-kit)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/@amjadiqbal/query-key-kit?style=flat-square&label=min%2Bgzip)](https://bundlephobia.com/package/@amjadiqbal/query-key-kit)
@@ -43,7 +43,7 @@ invalidateScope(queryClient, todos);           // everything under 'todos'
 
 ## Why
 
-TanStack Query v5's `queryOptions()` already keeps a key and its fetcher together. What it does not give you is a **key hierarchy**: one place that says which keys exist, how they nest, and which partial key to pass when you invalidate. Teams write that by hand, or use `@lukemorales/query-key-factory`, which gets about 400k downloads a week but has had no release since February 2024 and still has open v5 typing bugs.
+TanStack Query v5's `queryOptions()` already keeps a key and its fetcher together. What it does not give you is a **key hierarchy**: one place that says which keys exist, how they nest, and which partial key to pass when you invalidate. Teams write that by hand, or use `@lukemorales/query-key-factory`, which gets about 1.4 million downloads a month but has had no release since February 2024 and still has open v5 typing bugs.
 
 query-key-kit is a maintained, v5-first take on the same idea:
 
@@ -52,7 +52,7 @@ query-key-kit is a maintained, v5-first take on the same idea:
 - **Infinite queries.** `pageParam` is available in `queryFn`, and an entry with `initialPageParam` works with `useInfiniteQuery` and `fetchInfiniteQuery`.
 - **Typed scope helpers.** `invalidateScope`, `refetchScope`, `cancelScope`, `removeScope`, `getScopeData` and `setScopeData` take any node of the tree and pick the right partial key. `getScopeData` and `setScopeData` know the data type of every query they match.
 - **Mutations.** `createMutationKeys` keeps `mutationFn`'s own type, so `useMutation` infers variables and result.
-- **Every framework.** It depends only on `@tanstack/query-core` types, so the same keys work with `@tanstack/react-query`, `vue-query`, `solid-query`, `svelte-query` and `angular-query-experimental`.
+- **Framework-agnostic.** It depends only on `@tanstack/query-core` types, so the same keys work with any adapter. Tested with `@tanstack/react-query` and `@tanstack/vue-query`; Solid, Svelte and Angular Query share those core types but have no tests of their own yet.
 - **Small.** No runtime dependencies, ESM only, tree-shakeable.
 
 ## Install
