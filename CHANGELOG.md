@@ -5,6 +5,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+### Changed
+
+- The npm package now includes `CHANGELOG.md`.
+
 ## [0.1.0] - 2026-10-23
 
 ### Added
