@@ -83,6 +83,13 @@ describe('createQueryKeyStore and mergeQueryKeys', () => {
     expect(queries.todos.detail(3).queryKey).toEqual(['todos', 'detail', 3]);
   });
 
+  it('throws when merged scopes define the same entry twice', () => {
+    const a = createQueryKeys('dup', { one: null });
+    const b = createMutationKeys('dup', { one: null });
+    expect(() => mergeQueryKeys(a, b)).toThrow(/"one" twice in scope "dup"/);
+    expect(() => mergeQueryKeys(a, createQueryKeys('dup', { two: null }))).not.toThrow();
+  });
+
   it('merges scopes by name, combining query and mutation scopes', () => {
     const queries = mergeQueryKeys(todos, users, todoMutations);
     expect(queries.users._def).toEqual(['users']);

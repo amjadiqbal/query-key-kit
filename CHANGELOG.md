@@ -5,6 +5,24 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-23
+
+### Fixed
+
+- Scope helpers (`scopeKey`, `invalidateScope`, ...) no longer accept mutation entries or mutation-only scopes. They are rejected at compile time and `scopeKey` throws, because a mutation key used as a query filter matched unrelated queries.
+- `mergeQueryKeys` throws when two merged scopes define the same entry name, instead of the later one silently replacing the earlier (while the type claimed both).
+
+### Changed
+
+- The scope helpers' `client` is typed as query-core's `QueryClient` (the method each helper calls) instead of `any`; adapter clients that extend it, such as Vue Query's, still fit. Filters and options use query-core's types.
+- `TypedUseQueryOptions` takes an optional second type argument, `Data`, like `@lukemorales/query-key-factory`'s.
+- README: migration notes list every difference from `@lukemorales/query-key-factory` instead of calling it a drop-in replacement; size and TypeScript claims are now measured or tested.
+
+### Added
+
+- `examples/react`, a Vite + React example using every feature, and `npm run check:example`, which type-checks it against the packed tarball.
+- A TypeScript 5.0.4 type check of the built `.d.ts` in local CI.
+
 ## [0.1.1] - 2026-10-23
 
 ### Changed
@@ -25,6 +43,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Types: `inferQueryKeys`, `inferQueryKeyStore`, `inferQueryData`, `inferScopeData`, `TypedUseQueryOptions`.
 - Works with `@tanstack/query-core` 5.0 and later, so every framework adapter.
 
-[Unreleased]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/amjadiqbal/query-key-kit/releases/tag/v0.1.0

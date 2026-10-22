@@ -6,3 +6,5 @@ coverage/
 *.log
 .vite/
 .tanstack/
+examples/react/node_modules/
+examples/react/package-lock.json

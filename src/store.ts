@@ -34,7 +34,9 @@ type MergedStore<Scopes extends readonly AnyScope[]> = Scopes extends readonly [
 
 /**
  * Merges scopes created by `createQueryKeys` or `createMutationKeys` into one store, keyed by
- * scope name. Query and mutation scopes with the same name are combined.
+ * scope name. Scopes with the same name (typically a query scope and a mutation scope) are
+ * combined; if two of them define the same entry name, it throws instead of letting one
+ * silently replace the other.
  */
 export function mergeQueryKeys<const Scopes extends readonly AnyScope[]>(
   ...scopes: Scopes
@@ -43,7 +45,15 @@ export function mergeQueryKeys<const Scopes extends readonly AnyScope[]>(
 
   for (const scope of scopes) {
     const [name] = scope._def;
-    store[name] = { ...store[name], ...scope };
+    const existing = store[name];
+    if (existing) {
+      for (const entry of Object.keys(scope)) {
+        if (entry !== '_def' && entry in existing) {
+          throw new Error(`query-key-kit: mergeQueryKeys got "${entry}" twice in scope "${name}"`);
+        }
+      }
+    }
+    store[name] = { ...existing, ...scope };
   }
 
   return store as Prettify<MergedStore<Scopes>>;

@@ -8,7 +8,7 @@ import {
   useQuery,
   useSuspenseQuery,
 } from '@tanstack/react-query';
-import { useQuery as useVueQuery } from '@tanstack/vue-query';
+import { useQuery as useVueQuery, QueryClient as VueQueryClient } from '@tanstack/vue-query';
 import { describe, expectTypeOf, it } from 'vitest';
 import {
   createQueryKeyStore,
@@ -156,6 +156,32 @@ describe('scope helpers', () => {
     // @ts-expect-error queryKey comes from the node
     invalidateScope(client, todos.detail, { queryKey: ['x'] });
   });
+
+  it('rejects mutation entries and mutation-only scopes, keeps merged scopes', () => {
+    // @ts-expect-error a mutation entry's key is not a query filter
+    invalidateScope(client, todoMutations.create);
+    // @ts-expect-error a function mutation entry
+    invalidateScope(client, todoMutations.toggle);
+    // @ts-expect-error a called function mutation entry
+    invalidateScope(client, todoMutations.toggle(1));
+    // @ts-expect-error a scope with only mutation entries
+    invalidateScope(client, todoMutations);
+    const queries = mergeQueryKeys(todos, todoMutations);
+    invalidateScope(client, queries.todos);
+    invalidateScope(client, queries.todos.detail(1));
+  });
+
+  it('types the client as a QueryClient and accepts adapter subclasses', () => {
+    const vueClient = new VueQueryClient();
+    invalidateScope(vueClient, todos);
+    expectTypeOf(getScopeData(vueClient, todos.list)[0]![1]).toEqualTypeOf<Todo[] | undefined>();
+    setScopeData(vueClient, todos.list, (old) => old);
+    // @ts-expect-error not a QueryClient
+    invalidateScope({}, todos);
+    invalidateScope(client, todos, { exact: true, type: 'active', refetchType: 'none' });
+    // @ts-expect-error unknown filter
+    invalidateScope(client, todos, { exactly: true });
+  });
 });
 
 describe('lukemorales compatibility types', () => {
@@ -191,5 +217,9 @@ describe('lukemorales compatibility types', () => {
     const useTodo = (id: number, options?: Partial<TypedUseQueryOptions<typeof todos.detail>>) =>
       useQuery({ ...todos.detail(id), ...options });
     expectTypeOf(useTodo(1).data).toEqualTypeOf<Todo | undefined>();
+    // lukemorales' two-argument form: Data is the type after select
+    const useTitle = (id: number, options: Partial<TypedUseQueryOptions<typeof todos.detail, string>>) =>
+      useQuery({ ...todos.detail(id), ...options });
+    expectTypeOf(useTitle(1, { select: (todo) => todo.title }).data).toEqualTypeOf<string | undefined>();
   });
 });

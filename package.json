@@ -1,7 +1,7 @@
 {
   "name": "@amjadiqbal/query-key-kit",
-  "version": "0.1.1",
-  "description": "Typed query-key hierarchy and invalidation helpers for TanStack Query v5, built on queryOptions(). A maintained, drop-in successor to @lukemorales/query-key-factory. Framework-agnostic (query-core only).",
+  "version": "0.1.2",
+  "description": "Typed query-key hierarchy and invalidation helpers for TanStack Query v5, built on queryOptions(). A maintained successor to @lukemorales/query-key-factory with the same API. Framework-agnostic (query-core only).",
   "keywords": [
     "tanstack",
     "tanstack-query",
@@ -49,7 +49,9 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.min.json && tsc -p tsconfig.dts.json",
     "lint": "biome check .",
     "format": "biome check --write .",
-    "test": "vitest run --typecheck"
+    "test": "vitest run --typecheck",
+    "typecheck:ts5": "npm exec --yes --package=typescript@5.0.4 -- tsc -p tsconfig.ts5.json",
+    "check:example": "bash scripts/check-example.sh"
   },
   "peerDependencies": {
     "@tanstack/query-core": "^5.0.0"

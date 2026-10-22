@@ -40,13 +40,16 @@ type OptionsOf<Entry> = Entry extends (...args: never[]) => infer Result ? Resul
 
 /**
  * Typed observer options for an entry, for custom hooks that accept extra options:
- * `options?: Partial<TypedUseQueryOptions<typeof todos.detail>>`.
+ * `options?: Partial<TypedUseQueryOptions<typeof todos.detail>>`. `Data` is the type after
+ * `select`, as in `@lukemorales/query-key-factory`'s second type argument.
  */
-export type TypedUseQueryOptions<Entry extends LooseOptions | ((...args: never[]) => LooseOptions)> =
-  QueryObserverOptions<
-    inferQueryData<Entry>,
-    DefaultError,
-    inferQueryData<Entry>,
-    inferQueryData<Entry>,
-    StripTag<OptionsOf<Entry>['queryKey']>
-  >;
+export type TypedUseQueryOptions<
+  Entry extends LooseOptions | ((...args: never[]) => LooseOptions),
+  Data = inferQueryData<Entry>,
+> = QueryObserverOptions<
+  inferQueryData<Entry>,
+  DefaultError,
+  Data,
+  inferQueryData<Entry>,
+  StripTag<OptionsOf<Entry>['queryKey']>
+>;

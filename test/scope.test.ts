@@ -28,7 +28,11 @@ describe('scopeKey', () => {
     expect(scopeKey(todos.detail(1))).toEqual(['todos', 'detail', 1]);
     expect(scopeKey(todos.count)).toEqual(['todos', 'count', 'total']);
     expect(scopeKey(todos.detail(1)._ctx.comments)).toEqual(['todos', 'detail', 1, 'comments']);
-    expect(scopeKey(todoMutations.toggle(3))).toEqual(['todos', 'toggle', 3]);
+  });
+
+  it('throws for mutation entries instead of using their key as a query filter', () => {
+    // @ts-expect-error mutation entries are rejected at compile time too
+    expect(() => scopeKey(todoMutations.toggle(3))).toThrow(/mutation/);
   });
 });
 
