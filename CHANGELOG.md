@@ -5,6 +5,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-10-23
+
 ### Changed
 
 - The npm package now includes `CHANGELOG.md`.
@@ -23,5 +25,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Types: `inferQueryKeys`, `inferQueryKeyStore`, `inferQueryData`, `inferScopeData`, `TypedUseQueryOptions`.
 - Works with `@tanstack/query-core` 5.0 and later, so every framework adapter.
 
-[Unreleased]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/amjadiqbal/query-key-kit/releases/tag/v0.1.0
