@@ -1,4 +1,5 @@
 import type { QueryClient, QueryKey, Updater } from '@tanstack/query-core';
+import { isMutationNode } from './internals';
 import type { AnyKey, TagData } from './types';
 
 /**
@@ -57,11 +58,13 @@ export type ScopeData<Node> = Node extends (...args: never[]) => infer Result
 
 /**
  * The partial key that matches a node and everything below it: `queryKey` for an entry or a
- * called entry, `_def` for a scope or a function entry. Throws for mutation entries.
+ * called entry, `_def` for a scope or a function entry. Throws for mutation entries and for
+ * scopes created with `createMutationKeys`.
  */
 export function scopeKey<Node extends KeyNode>(node: QueryNode<Node>): QueryKey {
-  const value = node as KeyNode & { mutationKey?: unknown };
-  if ('mutationKey' in value) throw new Error('query-key-kit: scope helpers take query nodes, not mutation entries');
+  const value = node as KeyNode;
+  if (isMutationNode(value))
+    throw new Error('query-key-kit: scope helpers take query nodes, not mutation entries or scopes');
   if ('queryKey' in value) return value.queryKey;
   return value._def;
 }

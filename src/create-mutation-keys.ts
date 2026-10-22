@@ -1,4 +1,4 @@
-import { assertSchemaKeys, isKeyArray } from './internals';
+import { assertSchemaKeys, isKeyArray, markMutation } from './internals';
 import type { AnyKey, DefinitionKey, KeyTuple, Prettify } from './types';
 
 /**
@@ -87,7 +87,9 @@ function buildSchema(schema: MutationKeySchema, base: AnyKey): Record<string, un
     const key = [...base, name];
 
     if (typeof entry === 'function') {
-      output[name] = Object.assign((...args: unknown[]) => buildOptions(key, entry(...args), false), { _def: key });
+      output[name] = markMutation(
+        Object.assign((...args: unknown[]) => buildOptions(key, entry(...args), false), { _def: key }),
+      );
     } else if (entry == null) {
       output[name] = { mutationKey: key };
     } else {
@@ -118,5 +120,5 @@ export function createMutationKeys(scope: string, schema?: MutationKeySchema): u
 
   if (schema == null) return { _def: def };
 
-  return { ...buildSchema(schema, def), _def: def };
+  return markMutation({ ...buildSchema(schema, def), _def: def });
 }

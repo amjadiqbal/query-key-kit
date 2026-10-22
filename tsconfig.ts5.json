@@ -5,10 +5,13 @@
     "moduleResolution": "Bundler",
     "lib": ["ES2022", "DOM"],
     "strict": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "noEmit": true,
     "types": [],
-    "paths": { "@amjadiqbal/query-key-kit": ["./dist/index.d.ts"] }
+    "paths": {
+      "@amjadiqbal/query-key-kit": ["./dist/index.d.ts"],
+      "@tanstack/query-core": ["./node_modules/@tanstack/query-core-min/build/modern/index.d.ts"]
+    }
   },
   "include": ["test/ts5/consumer.ts"]
 }

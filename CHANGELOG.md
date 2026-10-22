@@ -5,6 +5,17 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-23
+
+### Fixed
+
+- The scope helpers now reject every mutation node at run time, as the types already did: function mutation entries (`todoMutations.toggle`) and scopes from `createMutationKeys` now throw too. In 0.1.2 only nodes with a `mutationKey` threw, so the 0.1.2 entry below overstated it.
+
+### Changed
+
+- The TypeScript 5.0.4 check of the built `.d.ts` now runs with `skipLibCheck` off, against `@tanstack/query-core` 5.0.0 (newer query-core types need TypeScript 5.4+). In 0.1.2 it had `skipLibCheck` on, so it did not check the `.d.ts` itself.
+- README and the example's README say which features the example covers instead of "every feature" (the 0.1.2 wording), and that Vue Query is type-tested only.
+
 ## [0.1.2] - 2026-10-23
 
 ### Fixed
@@ -43,7 +54,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Types: `inferQueryKeys`, `inferQueryKeyStore`, `inferQueryData`, `inferScopeData`, `TypedUseQueryOptions`.
 - Works with `@tanstack/query-core` 5.0 and later, so every framework adapter.
 
-[Unreleased]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/amjadiqbal/query-key-kit/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/amjadiqbal/query-key-kit/releases/tag/v0.1.0

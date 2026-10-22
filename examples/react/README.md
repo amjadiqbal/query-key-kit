@@ -1,9 +1,13 @@
 # query-key-kit React example
 
-A small Vite + React 19 app that uses every part of the README against a fake in-memory API:
+A small Vite + React 19 app that exercises the main features against a fake in-memory API:
 entries with `contextQueries`, `placeholderData` and `staleTime`, an infinite query, a mutation
-with an optimistic `setScopeData` update, `invalidateScope` on an entry, a function entry and a
-whole scope, `getScopeData`, typed `getQueryData`, and compile-time checks in `src/typecheck.ts`.
+key merged into the store with `mergeQueryKeys`, an optimistic `cancelScope` + `setScopeData`
+update, `invalidateScope` on an entry, a function entry and a whole scope, `scopeKey`,
+`getScopeData`, typed `getQueryData`, and compile-time checks (including `inferQueryKeyStore`) in
+`src/typecheck.ts`. It does not use `createQueryKeyStore`, `refetchScope`, `removeScope`,
+`TypedUseQueryOptions`, `skipToken`, `initialData`, `useSuspenseQuery` or `useQueries`; the
+package's unit and type tests cover those.
 
 ```bash
 npm install

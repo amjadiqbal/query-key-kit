@@ -1,6 +1,15 @@
 import { QueryClient } from '@tanstack/query-core';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { cancelScope, getScopeData, invalidateScope, refetchScope, removeScope, scopeKey, setScopeData } from '../src';
+import {
+  cancelScope,
+  getScopeData,
+  invalidateScope,
+  mergeQueryKeys,
+  refetchScope,
+  removeScope,
+  scopeKey,
+  setScopeData,
+} from '../src';
 import { type Todo, todoMutations, todos } from './fixtures';
 
 let client: QueryClient;
@@ -33,6 +42,18 @@ describe('scopeKey', () => {
   it('throws for mutation entries instead of using their key as a query filter', () => {
     // @ts-expect-error mutation entries are rejected at compile time too
     expect(() => scopeKey(todoMutations.toggle(3))).toThrow(/mutation/);
+    // @ts-expect-error a function mutation entry
+    expect(() => scopeKey(todoMutations.toggle)).toThrow(/mutation/);
+    // @ts-expect-error a static mutation entry
+    expect(() => scopeKey(todoMutations.create)).toThrow(/mutation/);
+    // @ts-expect-error a mutation scope
+    expect(() => scopeKey(todoMutations)).toThrow(/mutation/);
+  });
+
+  it('accepts a store scope that merges queries and mutations', () => {
+    const merged = mergeQueryKeys(todos, todoMutations);
+    expect(scopeKey(merged.todos)).toEqual(['todos']);
+    expect(Object.getOwnPropertySymbols(merged.todos)).toEqual([]);
   });
 });
 

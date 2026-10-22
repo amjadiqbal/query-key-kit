@@ -16,3 +16,19 @@ export function assertSchemaKeys(schema: object): string[] {
 
   return keys;
 }
+
+/**
+ * @internal Non-enumerable marker on mutation scopes and function mutation entries, so the scope
+ * helpers can reject them at run time (other mutation entries carry a `mutationKey`). Being
+ * non-enumerable, it is not copied when `mergeQueryKeys` spreads a mutation scope into a store.
+ */
+export const mutationMarker: unique symbol = Symbol.for('query-key-kit.mutation') as never;
+
+/** @internal */
+export function markMutation<T extends object>(value: T): T {
+  Object.defineProperty(value, mutationMarker, { value: true });
+  return value;
+}
+
+/** @internal */
+export const isMutationNode = (value: object): boolean => 'mutationKey' in value || mutationMarker in value;

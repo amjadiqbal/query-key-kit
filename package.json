@@ -1,6 +1,6 @@
 {
   "name": "@amjadiqbal/query-key-kit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Typed query-key hierarchy and invalidation helpers for TanStack Query v5, built on queryOptions(). A maintained successor to @lukemorales/query-key-factory with the same API. Framework-agnostic (query-core only).",
   "keywords": [
     "tanstack",

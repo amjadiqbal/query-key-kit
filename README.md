@@ -7,7 +7,7 @@
 
 # query-key-kit: typed query keys for TanStack Query v5
 
-A typed, framework-agnostic **query-key factory** for TanStack Query v5, tested with React Query and Vue Query. Organise your query keys in scopes, get real `queryOptions()` objects back with `DataTag`-branded keys, and invalidate or update whole branches of the cache with typed helpers. It keeps the API of `@lukemorales/query-key-factory`: for most code, switching is an import change, and the [migration notes](#migrating-from-lukemoralesquery-key-factory) list what behaves differently.
+A typed, framework-agnostic **query-key factory** for TanStack Query v5, tested at run time with query-core's `QueryClient` and in a React Query app, and type-tested with React Query and Vue Query. Organise your query keys in scopes, get real `queryOptions()` objects back with `DataTag`-branded keys, and invalidate or update whole branches of the cache with typed helpers. It keeps the API of `@lukemorales/query-key-factory`: for most code, switching is an import change, and the [migration notes](#migrating-from-lukemoralesquery-key-factory) list what behaves differently.
 
 [![npm](https://img.shields.io/npm/v/@amjadiqbal/query-key-kit?style=flat-square)](https://www.npmjs.com/package/@amjadiqbal/query-key-kit)
 [![License](https://img.shields.io/npm/l/@amjadiqbal/query-key-kit?style=flat-square)](LICENSE.md)
@@ -49,10 +49,10 @@ query-key-kit is a maintained, v5-first take on the same idea:
 - **Returns real query options.** Every entry produces what `queryOptions()` produces: a `DataTag`-branded `queryKey` (so `getQueryData`, `setQueryData` and `fetchQuery` are typed) and a `queryFn` typed against the full key.
 - **Any query option on an entry.** `staleTime`, `gcTime`, `placeholderData`, `initialData`, `select`, `meta`, `enabled`, `initialPageParam`, `getNextPageParam`... are passed through unchanged.
 - **Infinite queries.** `pageParam` is available in `queryFn`, and an entry with `initialPageParam` works with `useInfiniteQuery` and `fetchInfiniteQuery`.
-- **Typed scope helpers.** `invalidateScope`, `refetchScope`, `cancelScope`, `removeScope`, `getScopeData` and `setScopeData` take any node of the tree and pick the right partial key. `getScopeData` and `setScopeData` know the data type of every query they match.
+- **Typed scope helpers.** `invalidateScope`, `refetchScope`, `cancelScope`, `removeScope`, `getScopeData` and `setScopeData` take any query node of the tree and pick the right partial key. `getScopeData` and `setScopeData` know the data type of every query they match.
 - **Mutations.** `createMutationKeys` keeps `mutationFn`'s own type, so `useMutation` infers variables and result.
 - **Framework-agnostic.** It depends only on `@tanstack/query-core` types, so the same keys work with any adapter. Tested with `@tanstack/react-query` and `@tanstack/vue-query`; Solid, Svelte and Angular Query share those core types but have no tests of their own yet.
-- **Small.** No runtime dependencies, ESM only, `"sideEffects": false`. The 0.1.2 build is one 6.1 kB JavaScript file (1.8 kB gzipped).
+- **Small.** No runtime dependencies, ESM only, `"sideEffects": false`. The 0.1.3 build is one 6.7 kB JavaScript file (2.1 kB gzipped).
 
 ## Install
 
@@ -60,7 +60,7 @@ query-key-kit is a maintained, v5-first take on the same idea:
 npm install @amjadiqbal/query-key-kit
 ```
 
-You also need TanStack Query v5 for your framework (for example `@tanstack/react-query`), which brings `@tanstack/query-core`. TypeScript 5.0 or newer: the built types are checked with TypeScript 5.0.4, and the library with 7.0.
+You also need TanStack Query v5 for your framework (for example `@tanstack/react-query`), which brings `@tanstack/query-core`. TypeScript 5.0 or newer: the built `.d.ts` is checked with TypeScript 5.0.4 against `@tanstack/query-core` 5.0.0 (newer query-core releases need TypeScript 5.4 or later for their own types), and the library is built and tested with TypeScript 7.0.
 
 ## Declaring keys
 
@@ -161,7 +161,7 @@ getScopeData(queryClient, todos.list); // Array<[QueryKey, Todo[] | undefined]>
 | `setScopeData(client, node, updater, filters?)` | `client.setQueriesData`, typed |
 | `scopeKey(node)` | returns the partial key |
 
-The partial key is `queryKey` for an entry or a called entry, and `_def` for a scope or a function entry. `filters` takes every query filter except `queryKey` (`exact`, `type`, `stale`, `predicate`, ...). `client` is typed as query-core's `QueryClient` (only the method each helper calls), so adapter clients that extend it are accepted; tested with query-core's and Vue Query's. Mutation entries and scopes made only of mutations are rejected at compile time (and `scopeKey` throws for them), because a mutation key used as a query filter would match unrelated queries. The data type of a node is the union of every query its key matches, including context queries; it is `unknown` when a matched entry has no `queryFn`.
+The partial key is `queryKey` for an entry or a called entry, and `_def` for a scope or a function entry. `filters` takes every query filter except `queryKey` (`exact`, `type`, `stale`, `predicate`, ...). `client` is typed as query-core's `QueryClient` (only the method each helper calls), so adapter clients that extend it are accepted; run-tested with query-core's and React Query's, type-tested with Vue Query's. Mutation entries, function mutation entries and scopes created with `createMutationKeys` are rejected at compile time and throw at run time (`scopeKey` and every helper), because a mutation key used as a query filter would match unrelated queries. The data type of a node is the union of every query its key matches, including context queries; it is `unknown` when a matched entry has no `queryFn`.
 
 You can still use the keys directly: `queryClient.invalidateQueries({ queryKey: todos.detail._def })`.
 
@@ -236,8 +236,8 @@ What changes:
 - Type tests (`expectTypeOf`) cover `useQuery`, `useSuspenseQuery`, `useInfiniteQuery`, `useQueries` and `useMutation` from `@tanstack/react-query`, `useQuery` from `@tanstack/vue-query`, spreading entries into `queryOptions()` / `infiniteQueryOptions()`, `skipToken`, `initialData`, and the compatibility types.
 - Declaration emit is checked: a module that exports its keys compiles with `declaration: true`.
 - The library also type-checks against `@tanstack/query-core` 5.0.0, the lowest supported version.
-- The built `dist/index.d.ts` is type-checked with TypeScript 5.0.4 (`npm run typecheck:ts5`).
-- [`examples/react`](examples/react) uses every feature above; `npm run check:example` installs the packed tarball into it and type-checks it. Releases so far were also checked by hand in a browser with it, including a fresh install from npm.
+- The built `dist/index.d.ts` is type-checked with TypeScript 5.0.4 against `@tanstack/query-core` 5.0.0, with `skipLibCheck` off so the `.d.ts` itself is checked (`npm run typecheck:ts5`).
+- [`examples/react`](examples/react) covers the main features: `createQueryKeys` (null, function and infinite entries, `contextQueries`, `staleTime`, `placeholderData`), `createMutationKeys`, `mergeQueryKeys`, `inferQueryKeyStore`, `useQuery`, `useInfiniteQuery`, `useMutation`, `scopeKey`, `invalidateScope`, `cancelScope`, `setScopeData`, `getScopeData` and typed `getQueryData`. `npm run check:example` installs the packed tarball into it and type-checks it. The rest (`createQueryKeyStore`, `refetchScope`, `removeScope`, `TypedUseQueryOptions`, the other `infer*` types, `skipToken`, `initialData`, `useSuspenseQuery`, `useQueries`) is covered by the unit and type tests only. Releases so far were also checked by hand in a browser with it, including a fresh install from npm.
 - Solid, Svelte and Angular Query rely on the shared query-core types and have no tests of their own yet.
 
 ## Support
